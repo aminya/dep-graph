@@ -37,6 +37,10 @@ where
     pub fn add_dep(&mut self, dep: I) {
         self.deps.insert(dep);
     }
+
+    pub(crate) fn into_inner(self) -> (I, HashSet<I>) {
+        (self.id, self.deps)
+    }
 }
 
 #[cfg(test)]

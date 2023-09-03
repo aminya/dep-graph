@@ -30,13 +30,13 @@ fn add_layer(index: usize, count: usize) -> Vec<Node<String>> {
 pub fn parallel_benchmark(c: &mut Criterion) {
     const NUM_LAYERS: usize = 20;
     #[cfg(feature = "parallel")]
-    fn par_no_op(nodes: &Vec<Node<String>>) {
-        DepGraph::new(nodes)
+    fn par_no_op(nodes: Vec<Node<String>>) {
+        DepGraph::from_nodes(nodes)
             .into_par_iter()
             .for_each(|_node| thread::sleep(Duration::from_nanos(100)))
     }
-    fn seq_no_op(nodes: &Vec<Node<String>>) {
-        DepGraph::new(nodes)
+    fn seq_no_op(nodes: Vec<Node<String>>) {
+        DepGraph::from_nodes(nodes)
             .into_iter()
             .for_each(|_node| thread::sleep(Duration::from_nanos(100)))
     }
@@ -55,10 +55,10 @@ pub fn parallel_benchmark(c: &mut Criterion) {
         // Run the resolver
         #[cfg(feature = "parallel")]
         c.bench_function("par_same_nodes", |b| {
-            b.iter(|| par_no_op(black_box(&nodes)))
+            b.iter(|| par_no_op(black_box(nodes.clone())))
         });
         c.bench_function("seq_same_nodes", |b| {
-            b.iter(|| seq_no_op(black_box(&nodes)))
+            b.iter(|| seq_no_op(black_box(nodes.clone())))
         });
     }
 
@@ -75,10 +75,10 @@ pub fn parallel_benchmark(c: &mut Criterion) {
         // Run the resolver
         #[cfg(feature = "parallel")]
         c.bench_function("par_double_nodes", |b| {
-            b.iter(|| par_no_op(black_box(&nodes)))
+            b.iter(|| par_no_op(black_box(nodes.clone())))
         });
         c.bench_function("seq_double_nodes", |b| {
-            b.iter(|| seq_no_op(black_box(&nodes)))
+            b.iter(|| seq_no_op(black_box(nodes.clone())))
         });
     }
 
@@ -95,10 +95,10 @@ pub fn parallel_benchmark(c: &mut Criterion) {
         // Run the resolver
         #[cfg(feature = "parallel")]
         c.bench_function("par_half_nodes", |b| {
-            b.iter(|| par_no_op(black_box(&nodes)))
+            b.iter(|| par_no_op(black_box(nodes.clone())))
         });
         c.bench_function("seq_half_nodes", |b| {
-            b.iter(|| seq_no_op(black_box(&nodes)))
+            b.iter(|| seq_no_op(black_box(nodes.clone())))
         });
     }
 
@@ -114,8 +114,8 @@ pub fn parallel_benchmark(c: &mut Criterion) {
 
         // Run the resolver
         #[cfg(feature = "parallel")]
-        c.bench_function("par_100_nodes", |b| b.iter(|| par_no_op(black_box(&nodes))));
-        c.bench_function("seq_100_nodes", |b| b.iter(|| seq_no_op(black_box(&nodes))));
+        c.bench_function("par_100_nodes", |b| b.iter(|| par_no_op(black_box(nodes.clone()))));
+        c.bench_function("seq_100_nodes", |b| b.iter(|| seq_no_op(black_box(nodes.clone()))));
     }
 }
 
