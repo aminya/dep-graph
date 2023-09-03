@@ -22,8 +22,8 @@ use std::sync::{
 use std::thread;
 use std::time::Duration;
 
-/// Default timeout in milliseconds
-const DEFAULT_TIMEOUT: Duration = Duration::from_millis(1000);
+/// Default timeout in seconds
+const DEFAULT_TIMEOUT: Duration = Duration::from_secs(60);
 
 /// Add into_par_iter() to DepGraph
 impl<I> IntoParallelIterator for DepGraph<I>
