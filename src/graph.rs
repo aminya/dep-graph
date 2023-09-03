@@ -46,7 +46,10 @@ where
                 ready_nodes.push(node.id().clone());
             } else {
                 for node_dep in node.deps() {
-                    rdeps.entry(node_dep.clone()).or_default().insert(node.id().clone());
+                    rdeps
+                        .entry(node_dep.clone())
+                        .or_default()
+                        .insert(node.id().clone());
                 }
             }
         }
